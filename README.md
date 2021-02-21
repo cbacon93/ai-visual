@@ -1,5 +1,6 @@
 # AI Visual
-Visual representation of machine learning algorithms
+Visual representation of machine learning algorithms  
+Try it: https://cbacon93.github.io/ai-visual/
 
 ## Whats the problem to solve?
 Our rabbit is hungry but does not know how and where to find food.
