@@ -5,15 +5,15 @@ import SelectDropdown from './selectDropdown';
 class Navigation extends Component {
   algorithms = [
     {id: 0, name: "Genetic"},
-    {id: 1, name: "Network"},
+    //{id: 1, name: "Network"},
   ];
 
   state = {
     ai_selection: 0,
     nchildren: 100,
-    sel_cutoff: 10,
-    mut_chance: 10,
-    mut_amt: 10
+    sel_cutoff: 20,
+    mut_chance: 20,
+    mut_amt: 20
   };
 
 
@@ -27,8 +27,21 @@ class Navigation extends Component {
           selected={this.state.ai_selection}
           onSelect={this.handleAiSelect}
         />
-        <Button className="m-2" variant="success">Start</Button>
-        <Button className="m-2" variant="danger">Reset</Button>
+
+
+        Generation {this.props.parentState.sim_iterations} <br />
+        Current time {Math.round(this.props.parentState.sim_roundtime)} <br />
+        Total time {Math.round(this.props.parentState.sim_total_time)} <br />
+
+        {(function () {
+          if (this.props.parentState.is_running) {
+            return <Button className="m-2" variant="warning" onClick={this.props.onStartStop}>Pause</Button>
+          } else {
+            return <Button className="m-2" variant="success" onClick={this.props.onStartStop}>Start</Button>
+          }
+        }).call(this)}
+
+        <Button className="m-2" variant="danger" onClick={this.props.onReset}>Reset</Button>
 
         <Form.Group className="m-2" controlId="formBasicRangeCustom">
           <Form.Label>Number of children: {this.state.nchildren}</Form.Label>
@@ -50,7 +63,12 @@ class Navigation extends Component {
           <Form.Control name="mut_amt" onChange={this.handleRangeSelect} type="range" min="1" max="1000" step="1" value={this.state.mut_amt} custom />
         </Form.Group>
 
-        Generations:
+        Generations:<br />
+        <ul>
+        {this.props.parentState.generations.slice(0).reverse().slice(0, 10).map((gen) => {
+          return <li key={gen.gen}>G{gen.gen} = {Math.round(gen.best)}</li>
+        })}
+        </ul>
       </nav>
     );
   }
